@@ -1,0 +1,223 @@
+{
+  "total_patents": 500,
+  "top_inventors": [
+    {
+      "rank": 1,
+      "name": "Sofia Patel",
+      "country": "UG",
+      "patents": 12
+    },
+    {
+      "rank": 2,
+      "name": "Maria Zhang",
+      "country": "KR",
+      "patents": 12
+    },
+    {
+      "rank": 3,
+      "name": "Hans Garcia",
+      "country": "JP",
+      "patents": 11
+    },
+    {
+      "rank": 4,
+      "name": "Ali Garcia",
+      "country": "KR",
+      "patents": 10
+    },
+    {
+      "rank": 5,
+      "name": "Yuki Smith",
+      "country": "KR",
+      "patents": 10
+    },
+    {
+      "rank": 6,
+      "name": "Wei Rossi",
+      "country": "US",
+      "patents": 10
+    },
+    {
+      "rank": 7,
+      "name": "Yuki Wang",
+      "country": "US",
+      "patents": 9
+    },
+    {
+      "rank": 8,
+      "name": "Priya Mueller",
+      "country": "CA",
+      "patents": 9
+    },
+    {
+      "rank": 9,
+      "name": "Priya Mueller",
+      "country": "CN",
+      "patents": 9
+    },
+    {
+      "rank": 10,
+      "name": "Sofia Johnson",
+      "country": "JP",
+      "patents": 9
+    }
+  ],
+  "top_companies": [
+    {
+      "rank": 1,
+      "company": "Apple Inc",
+      "country": "US",
+      "patents": 46
+    },
+    {
+      "rank": 2,
+      "company": "Google LLC",
+      "country": "US",
+      "patents": 46
+    },
+    {
+      "rank": 3,
+      "company": "Qualcomm Incorporated",
+      "country": "US",
+      "patents": 46
+    },
+    {
+      "rank": 4,
+      "company": "Canon Inc",
+      "country": "JP",
+      "patents": 46
+    },
+    {
+      "rank": 5,
+      "company": "Microsoft Corporation",
+      "country": "US",
+      "patents": 42
+    },
+    {
+      "rank": 6,
+      "company": "Intel Corporation",
+      "country": "US",
+      "patents": 40
+    },
+    {
+      "rank": 7,
+      "company": "Toyota Motor Corporation",
+      "country": "JP",
+      "patents": 35
+    },
+    {
+      "rank": 8,
+      "company": "IBM",
+      "country": "US",
+      "patents": 34
+    },
+    {
+      "rank": 9,
+      "company": "Huawei Technologies",
+      "country": "CN",
+      "patents": 33
+    },
+    {
+      "rank": 10,
+      "company": "Samsung Electronics",
+      "country": "KR",
+      "patents": 28
+    }
+  ],
+  "top_countries": [
+    {
+      "rank": 1,
+      "country": "US",
+      "patents": 363,
+      "share_pct": 36.56
+    },
+    {
+      "rank": 2,
+      "country": "CN",
+      "patents": 149,
+      "share_pct": 15.01
+    },
+    {
+      "rank": 3,
+      "country": "JP",
+      "patents": 89,
+      "share_pct": 8.96
+    },
+    {
+      "rank": 4,
+      "country": "KR",
+      "patents": 82,
+      "share_pct": 8.26
+    },
+    {
+      "rank": 5,
+      "country": "DE",
+      "patents": 55,
+      "share_pct": 5.54
+    },
+    {
+      "rank": 6,
+      "country": "CA",
+      "patents": 18,
+      "share_pct": 1.81
+    },
+    {
+      "rank": 7,
+      "country": "UG",
+      "patents": 16,
+      "share_pct": 1.61
+    },
+    {
+      "rank": 8,
+      "country": "GB",
+      "patents": 15,
+      "share_pct": 1.51
+    },
+    {
+      "rank": 9,
+      "country": "FR",
+      "patents": 12,
+      "share_pct": 1.21
+    },
+    {
+      "rank": 10,
+      "country": "TW",
+      "patents": 10,
+      "share_pct": 1.01
+    }
+  ],
+  "yearly_trends": [
+    {
+      "year": 2015,
+      "patents": 72
+    },
+    {
+      "year": 2016,
+      "patents": 60
+    },
+    {
+      "year": 2017,
+      "patents": 63
+    },
+    {
+      "year": 2018,
+      "patents": 64
+    },
+    {
+      "year": 2019,
+      "patents": 74
+    },
+    {
+      "year": 2020,
+      "patents": 53
+    },
+    {
+      "year": 2021,
+      "patents": 62
+    },
+    {
+      "year": 2022,
+      "patents": 52
+    }
+  ]
+}
