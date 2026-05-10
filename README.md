@@ -1,7 +1,7 @@
-# Global Patent Intelligence — Data Pipeline
+# NICHOLAS' Global Patent Intelligence Data Pipeline
 
-A full end-to-end data engineering pipeline that collects, cleans, stores, and analyzes
-real-world patent data from the USPTO PatentsView dataset.
+A full end to end data engineering pipeline that collects, cleans, stores and analyzes
+real world patent data from the USPTO PatentsView dataset.
 
 ---
 
@@ -9,13 +9,12 @@ real-world patent data from the USPTO PatentsView dataset.
 
 ```
 patent_pipeline/
-├── 00_sample_data.py        # Generate realistic sample data (no download needed)
-├── 01_ingest.py             # Download real data from USPTO PatentsView API
-├── 02_clean.py              # Clean and validate raw data with pandas
-├── 03_load_db.py            # Load clean data into SQLite database
-├── 04_report.py             # Generate console, CSV, and JSON reports
-├── 05_visualize.py          # Create charts (bonus)
-├── dashboard.py             # Interactive Streamlit dashboard (bonus)
+├── ingest.py             # Download real data from USPTO PatentsView API
+├── clean.py              # Clean and validate raw data with pandas
+├── load_db.py            # Load clean data into SQLite database
+├── report.py             # Generate console, CSV, and JSON reports
+├── visualize.py          # Create charts (bonus)
+├── dashboard.py             # Interactive Streamlit dashboard
 ├── run_pipeline.py          # Run entire pipeline in one command
 ├── requirements.txt
 ├── sql/
@@ -39,34 +38,12 @@ cd patent_pipeline
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Run the full pipeline (sample data — no internet needed)
+# 3. Run the full pipeline 
 python run_pipeline.py
 
-# 4. Run with real USPTO data
-python run_pipeline.py --real-data
-
-# 5. Include visualizations
-python run_pipeline.py --viz
-
-# 6. Launch interactive dashboard
+# 4. Launch interactive dashboard
 streamlit run dashboard.py
 ```
-
----
-
-## Pipeline Stages
-
-| Step | Script | Description |
-|------|--------|-------------|
-| 0 | `00_sample_data.py` | Generate 5,000 realistic sample patents |
-| 1 | `01_ingest.py` | Download from USPTO PatentsView bulk API |
-| 2 | `02_clean.py` | Pandas cleaning: nulls, dates, dedup, standardise |
-| 3 | `03_load_db.py` | Load 5 tables into SQLite with indexes |
-| 4 | `04_report.py` | Console + CSV + JSON reports |
-| 5 | `05_visualize.py` | 5 matplotlib charts (bonus) |
-| — | `dashboard.py` | Streamlit interactive dashboard (bonus) |
-
----
 
 ## Database Schema
 
@@ -74,8 +51,8 @@ streamlit run dashboard.py
 patents          (patent_id, title, abstract, filing_date, year)
 inventors        (inventor_id, name, country)
 companies        (company_id, name, country)
-patent_inventors (patent_id, inventor_id)   -- relationship table
-patent_companies (patent_id, company_id)    -- relationship table
+patent_inventors (patent_id, inventor_id)   
+patent_companies (patent_id, company_id)    
 ```
 
 ---

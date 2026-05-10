@@ -1,10 +1,6 @@
--- schema.sql
--- Global Patent Intelligence — SQLite Database Schema
--- Run automatically by 03_load_db.py
 
 PRAGMA foreign_keys = ON;
 
--- ── Core tables ──────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS patents (
     patent_id    TEXT PRIMARY KEY,
@@ -26,7 +22,6 @@ CREATE TABLE IF NOT EXISTS companies (
     country      TEXT
 );
 
--- ── Relationship tables ──────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS patent_inventors (
     patent_id    TEXT NOT NULL REFERENCES patents(patent_id),
@@ -40,7 +35,6 @@ CREATE TABLE IF NOT EXISTS patent_companies (
     PRIMARY KEY (patent_id, company_id)
 );
 
--- ── Indexes for faster query performance ─────────────────────
 
 CREATE INDEX IF NOT EXISTS idx_patents_year        ON patents(year);
 CREATE INDEX IF NOT EXISTS idx_inventors_country   ON inventors(country);

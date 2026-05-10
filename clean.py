@@ -1,12 +1,3 @@
-"""
-02_clean.py — Fetch PatentsView data directly from USPTO and clean in memory.
-No raw files saved to disk.
-
-Usage:
-    python 02_clean.py              # fetch live from USPTO
-    python 02_clean.py --sample     # use local sample data (fast, no internet)
-"""
-
 import os, io, sys, zipfile, requests, pandas as pd
 
 CLEAN_DIR  = os.path.join(os.path.dirname(__file__), "data", "clean")
@@ -28,7 +19,6 @@ FILE_TYPES = [
 ]
 
 
-# ── Remote fetch ──────────────────────────────────────────────
 def fetch_remote(file_type: str, usecols: list) -> pd.DataFrame:
     """
     USPTO bulk data flow:
@@ -42,12 +32,10 @@ def fetch_remote(file_type: str, usecols: list) -> pd.DataFrame:
         "fileDataToDate":   DATE_TO,
     }
 
-    # ── Step 1: get the file listing ─────────────────────────
     print(f"  [{file_type}] Fetching file listing ...", flush=True)
     listing_resp = requests.get(BASE_URL, params=params, timeout=60)
     listing_resp.raise_for_status()
 
-    # The API returns JSON; extract the download URL
     try:
         listing = listing_resp.json()
     except Exception:
@@ -56,8 +44,6 @@ def fetch_remote(file_type: str, usecols: list) -> pd.DataFrame:
             f"Response (first 500 chars): {listing_resp.text[:500]}"
         )
 
-    # Navigate the JSON — structure is {"data": [{"files": [{"downloadUrl": ...}]}]}
-    # or sometimes {"files": [{"downloadUrl": ...}]}
     files = []
     if "data" in listing:
         for entry in listing["data"]:
@@ -74,13 +60,11 @@ def fetch_remote(file_type: str, usecols: list) -> pd.DataFrame:
     download_url = files[0]["downloadUrl"]
     print(f"  [{file_type}] Downloading: {download_url}", flush=True)
 
-    # ── Step 2: download the zip ──────────────────────────────
     zip_resp = requests.get(download_url, timeout=300, stream=True)
     zip_resp.raise_for_status()
 
     content = zip_resp.content
 
-    # ── Step 3: extract TSV from zip ─────────────────────────
     try:
         with zipfile.ZipFile(io.BytesIO(content)) as zf:
             tsv_name = next(f for f in zf.namelist() if f.endswith(".tsv"))
@@ -92,7 +76,6 @@ def fetch_remote(file_type: str, usecols: list) -> pd.DataFrame:
         return df
 
     except zipfile.BadZipFile:
-        # Not a zip — maybe a plain TSV or TSV.GZ
         print(f"  [{file_type}] Not a zip, trying plain TSV ...", flush=True)
         try:
             df = pd.read_csv(io.BytesIO(content), sep="\t",
@@ -128,7 +111,6 @@ def report(label, before, after):
     print(f"    {label}: {before:,} -> {after:,}  (dropped {dropped:,} / {pct:.1f}%)")
 
 
-# ── Cleaning ──────────────────────────────────────────────────
 def clean_patents(df):
     before = len(df)
     df = df.rename(columns={"date": "filing_date"})
@@ -191,7 +173,6 @@ def clean_patent_assignees(df, valid_patents, valid_companies):
     return df[["patent_id", "company_id"]]
 
 
-# ── Main ──────────────────────────────────────────────────────
 def main():
     mode = "sample data" if USE_SAMPLE else f"USPTO live ({DATE_FROM} to {DATE_TO})"
     print("\n" + "=" * 55)

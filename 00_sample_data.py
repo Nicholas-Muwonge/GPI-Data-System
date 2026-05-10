@@ -1,9 +1,3 @@
-"""
-00_sample_data.py — Generate realistic sample patent data
-Run this if you cannot download from USPTO, or for fast local testing.
-Creates TSV files in data/raw/ that mimic the real PatentsView schema.
-"""
-
 import os
 import random
 import csv
@@ -14,7 +8,6 @@ os.makedirs(RAW_DIR, exist_ok=True)
 
 random.seed(42)
 
-# ── Reference data ────────────────────────────────────────────
 COUNTRIES = {
     "US": 55, "CN": 18, "JP": 8, "DE": 5, "KR": 4,
     "GB": 3, "FR": 2, "CA": 2, "TW": 1, "UG": 1, "IN": 1,
@@ -92,7 +85,6 @@ def make_abstract(title):
     return " ".join(random.sample(sentences, k=random.randint(2, 4)))
 
 
-# ── Build inventors pool ──────────────────────────────────────
 inventors = []
 used_names = set()
 for i in range(1, N_INVENTORS + 1):
@@ -111,10 +103,8 @@ for i in range(1, N_INVENTORS + 1):
         "country": weighted_country(),
     })
 
-# Give a handful of inventors many patents (realistic Zipf-like distribution)
 prolific_ids = [inv["inventor_id"] for inv in random.sample(inventors, 50)]
 
-# ── Build companies pool ──────────────────────────────────────
 company_rows = []
 for i, (name, country) in enumerate(COMPANIES, start=1):
     company_rows.append({
@@ -122,13 +112,12 @@ for i, (name, country) in enumerate(COMPANIES, start=1):
         "disambig_assignee_id": f"asgn-{i:04d}",
         "organization": name,
         "country": country,
-        "assignee_type": "2",  # 2 = US corporation in PV schema
+        "assignee_type": "2", 
     })
 
-# ── Generate patents and relationship rows ────────────────────
 patent_rows = []
-inventor_rel_rows = []   # g_patent_inventor style
-assignee_rel_rows = []   # g_patent_assignee style
+inventor_rel_rows = []  
+assignee_rel_rows = []   
 
 for p in range(1, N_PATENTS + 1):
     pid = f"US{10_000_000 + p}"
@@ -149,7 +138,6 @@ for p in range(1, N_PATENTS + 1):
         "withdrawn": 0,
     })
 
-    # Assign 1-4 inventors; prolific inventors appear more often
     n_inv = random.choices([1, 2, 3, 4], weights=[40, 35, 18, 7])[0]
     chosen_inventors = []
     if random.random() < 0.3 and prolific_ids:
@@ -165,10 +153,8 @@ for p in range(1, N_PATENTS + 1):
             "sequence": seq,
         })
 
-    # Assign 0-2 assignees (some patents have none)
     if random.random() < 0.85:
         n_asgn = random.choices([1, 2], weights=[85, 15])[0]
-        # Large companies get more patents
         weights = [30 if c["organization"] in
                    {"Samsung Electronics","IBM","Google LLC","Microsoft Corporation","Apple Inc"}
                    else 5 for c in company_rows]

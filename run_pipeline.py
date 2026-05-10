@@ -1,13 +1,3 @@
-"""
-run_pipeline.py — Run the full pipeline in one command
-
-Usage:
-    python run_pipeline.py              # real data, fetched live from USPTO (no download)
-    python run_pipeline.py --sample     # use local sample data (fast, no internet)
-    python run_pipeline.py --viz        # also generate charts
-    python run_pipeline.py --sample --viz
-"""
-
 import sys
 import subprocess
 
@@ -23,22 +13,22 @@ def run(script, extra_args=None):
 
 def main():
     print("\n" + "#" * 55)
-    print("  GLOBAL PATENT INTELLIGENCE — FULL PIPELINE")
+    print("  NICHOLAS' GLOBAL PATENT INTELLIGENCE FULL PIPELINE")
     print("#" * 55)
 
     if USE_SAMPLE:
         print("\n  Using local sample data (--sample)")
-        run("00_sample_data.py")
-        run("02_clean.py", ["--sample"])
+        run("sample_data.py")
+        run("clean.py", ["--sample"])
     else:
         print(f"\n  Fetching live data from USPTO (no download to disk)")
-        run("02_clean.py")          # fetches directly from URLs
+        run("clean.py")         
 
-    run("03_load_db.py")
-    run("04_report.py")
+    run("load_db.py")
+    run("report.py")
 
     if MAKE_VIZ:
-        run("05_visualize.py")
+        run("visualize.py")
 
     print("\n" + "#" * 55)
     print("  PIPELINE COMPLETE!")

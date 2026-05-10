@@ -1,13 +1,3 @@
-"""
-04_report.py — Generate all required reports
-Produces:
-  • Console report (terminal output)
-  • reports/top_inventors.csv
-  • reports/top_companies.csv
-  • reports/country_trends.csv
-  • reports/summary_report.json
-"""
-
 import os
 import json
 import sqlite3
@@ -30,7 +20,6 @@ def query(conn: sqlite3.Connection, sql: str) -> pd.DataFrame:
     return pd.read_sql_query(sql, conn)
 
 
-# ── SQL strings ───────────────────────────────────────────────
 SQL_TOTAL_PATENTS = "SELECT COUNT(*) AS n FROM patents"
 
 SQL_TOP_INVENTORS = """
@@ -104,7 +93,6 @@ SQL_RANKED = """
 """
 
 
-# ── Console report ────────────────────────────────────────────
 def print_console_report(total, inventors_df, companies_df, countries_df):
     W = 55
     print("\n" + "=" * W)
@@ -133,7 +121,6 @@ def print_console_report(total, inventors_df, companies_df, countries_df):
     print(f"\n{'='*W}\n")
 
 
-# ── CSV exports ───────────────────────────────────────────────
 def save_csvs(inventors_df, companies_df, countries_df, yearly_df, ranked_df):
     inventors_df.to_csv(os.path.join(REPORT_DIR, "top_inventors.csv"),   index=False)
     companies_df.to_csv(os.path.join(REPORT_DIR, "top_companies.csv"),   index=False)
@@ -146,7 +133,6 @@ def save_csvs(inventors_df, companies_df, countries_df, yearly_df, ranked_df):
         print(f"      reports/{name}.csv")
 
 
-# ── JSON report ───────────────────────────────────────────────
 def save_json(total, inventors_df, companies_df, countries_df, yearly_df):
     report = {
         "total_patents": int(total),
@@ -177,7 +163,6 @@ def save_json(total, inventors_df, companies_df, countries_df, yearly_df):
     return report
 
 
-# ── Main ──────────────────────────────────────────────────────
 def main():
     conn = connect()
 

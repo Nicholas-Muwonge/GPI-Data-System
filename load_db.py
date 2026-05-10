@@ -1,8 +1,3 @@
-"""
-03_load_db.py — Load clean CSV files into a SQLite database
-Creates patent_pipeline.db with all required tables and indexes.
-"""
-
 import os
 import sqlite3
 import pandas as pd
@@ -34,7 +29,7 @@ def load_table(conn: sqlite3.Connection, csv_file: str, table: str,
 
     total = 0
     for chunk in pd.read_csv(path, dtype=str, chunksize=chunksize):
-        chunk = chunk.where(pd.notnull(chunk), None)  # replace NaN → NULL
+        chunk = chunk.where(pd.notnull(chunk), None)  
         chunk.to_sql(table, conn, if_exists="append", index=False,
                      method="multi")
         total += len(chunk)
@@ -48,7 +43,7 @@ def main():
     print("  Loading Patent Database")
     print("=" * 55)
 
-    # Remove old DB so we start fresh
+  
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
         print(f"  Removed old database")

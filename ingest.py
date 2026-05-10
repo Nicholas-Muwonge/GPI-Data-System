@@ -1,24 +1,14 @@
-"""
-01_ingest.py — Download PatentsView granted patent data
-Downloads TSV files from USPTO PatentsView bulk data API.
-Run this first before any other script.
-"""
-
 import os
 import requests
 import zipfile
 import io
 import time
 
-# ── Configuration ─────────────────────────────────────────────
 RAW_DIR = os.path.join(os.path.dirname(__file__), "data", "raw")
 os.makedirs(RAW_DIR, exist_ok=True)
 
 BASE_URL = "https://data.uspto.gov/bulkdata/datasets/pvgpatdis"
 
-# Files we need from PatentsView (zipped TSVs)
-# We use a small recent slice to keep download size manageable.
-# Adjust fileDataFromDate / fileDataToDate for a larger range.
 FILES_TO_DOWNLOAD = [
     {
         "name": "g_patent.tsv.zip",
@@ -51,7 +41,6 @@ FILES_TO_DOWNLOAD = [
 
 
 def download_file(name: str, description: str, params: dict) -> str:
-    """Download a single PatentsView bulk file and extract the TSV."""
     tsv_name = name.replace(".zip", "")
     tsv_path = os.path.join(RAW_DIR, tsv_name)
 
@@ -64,20 +53,18 @@ def download_file(name: str, description: str, params: dict) -> str:
         resp = requests.get(BASE_URL, params=params, timeout=120, stream=True)
         resp.raise_for_status()
 
-        # The API returns a zip — extract inline
         with zipfile.ZipFile(io.BytesIO(resp.content)) as zf:
             for member in zf.namelist():
                 if member.endswith(".tsv"):
                     zf.extract(member, RAW_DIR)
                     extracted = os.path.join(RAW_DIR, member)
-                    # Normalise the filename
                     if extracted != tsv_path:
                         os.rename(extracted, tsv_path)
                     break
 
         size_mb = os.path.getsize(tsv_path) / 1_048_576
         print(f"    ✓ Saved {tsv_name}  ({size_mb:.1f} MB)")
-        time.sleep(1)  # polite pause between requests
+        time.sleep(1)  
     except Exception as exc:
         print(f"    ✗ Failed to download {name}: {exc}")
         print("      → Using sample data fallback (run 00_sample_data.py)")

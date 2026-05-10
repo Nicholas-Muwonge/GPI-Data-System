@@ -1,8 +1,3 @@
-"""
-dashboard.py — Interactive Streamlit dashboard (bonus marks)
-Run with:  streamlit run dashboard.py
-"""
-
 import os
 import json
 import sqlite3
@@ -14,14 +9,12 @@ import matplotlib.ticker as mticker
 DB_PATH    = os.path.join(os.path.dirname(__file__), "patent_pipeline.db")
 REPORT_DIR = os.path.join(os.path.dirname(__file__), "reports")
 
-# ── Page config ───────────────────────────────────────────────
 st.set_page_config(
-    page_title="Global Patent Intelligence",
+    page_title="NICHOLAS' GPI",
     page_icon="🔬",
     layout="wide",
 )
 
-# ── DB connection (cached) ────────────────────────────────────
 @st.cache_resource
 def get_conn():
     return sqlite3.connect(DB_PATH, check_same_thread=False)
@@ -32,9 +25,8 @@ def run_query(sql: str) -> pd.DataFrame:
     return pd.read_sql_query(sql, get_conn())
 
 
-# ── Sidebar ───────────────────────────────────────────────────
-st.sidebar.title("🔬 Patent Intelligence")
-st.sidebar.markdown("Global Patent Intelligence Dashboard")
+st.sidebar.title("🔬 Nicholas' Patent Intelligence")
+st.sidebar.markdown("Nicholas' GPI Dashboard")
 
 page = st.sidebar.radio(
     "Navigate",
@@ -48,9 +40,8 @@ year_range = st.sidebar.slider(
     value=(2015, 2023),
 )
 
-# ── Overview ──────────────────────────────────────────────────
 if page == "📊 Overview":
-    st.title("📊 Global Patent Intelligence")
+    st.title("📊 NICHOLAS' Global Patent Intelligence")
     st.markdown("---")
 
     total_patents   = run_query("SELECT COUNT(*) AS n FROM patents")["n"].iloc[0]
@@ -76,7 +67,6 @@ if page == "📊 Overview":
     st.subheader("Patents per Year")
     st.line_chart(yearly.set_index("year")["patents"])
 
-    # Load JSON summary if available
     json_path = os.path.join(REPORT_DIR, "summary_report.json")
     if os.path.exists(json_path):
         with open(json_path) as f:
@@ -86,7 +76,6 @@ if page == "📊 Overview":
         st.json(summary)
 
 
-# ── Inventors ─────────────────────────────────────────────────
 elif page == "👤 Inventors":
     st.title("👤 Top Inventors")
 
@@ -118,7 +107,6 @@ elif page == "👤 Inventors":
     st.download_button("⬇ Download CSV", csv, "top_inventors.csv", "text/csv")
 
 
-# ── Companies ─────────────────────────────────────────────────
 elif page == "🏢 Companies":
     st.title("🏢 Top Companies")
 
@@ -151,7 +139,6 @@ elif page == "🏢 Companies":
     st.download_button("⬇ Download CSV", csv, "top_companies.csv", "text/csv")
 
 
-# ── Countries ─────────────────────────────────────────────────
 elif page == "🌍 Countries":
     st.title("🌍 Patent Production by Country")
 
@@ -185,7 +172,6 @@ elif page == "🌍 Countries":
     st.download_button("⬇ Download CSV", csv, "country_trends.csv", "text/csv")
 
 
-# ── Trends ────────────────────────────────────────────────────
 elif page == "📈 Trends":
     st.title("📈 Innovation Trends")
 

@@ -1,8 +1,3 @@
-"""
-05_visualize.py — Generate charts from the patent database (bonus marks)
-Outputs PNG charts to reports/charts/
-"""
-
 import os
 import sqlite3
 import pandas as pd
@@ -13,7 +8,6 @@ DB_PATH   = os.path.join(os.path.dirname(__file__), "patent_pipeline.db")
 CHART_DIR = os.path.join(os.path.dirname(__file__), "reports", "charts")
 os.makedirs(CHART_DIR, exist_ok=True)
 
-# Colour palette
 BLUE   = "#2563EB"
 GREEN  = "#16A34A"
 ORANGE = "#EA580C"
@@ -36,7 +30,6 @@ def save(fig, name):
     print(f"  ✓ {name}")
 
 
-# ── Chart 1: Patents per year (line) ─────────────────────────
 def chart_yearly_trend(conn):
     df = q(conn, """
         SELECT year, COUNT(*) AS patents
@@ -56,7 +49,6 @@ def chart_yearly_trend(conn):
     save(fig, "chart_yearly_trend.png")
 
 
-# ── Chart 2: Top 10 inventors (horizontal bar) ───────────────
 def chart_top_inventors(conn):
     df = q(conn, """
         SELECT i.name, COUNT(DISTINCT pi.patent_id) AS patents
@@ -76,7 +68,6 @@ def chart_top_inventors(conn):
     save(fig, "chart_top_inventors.png")
 
 
-# ── Chart 3: Top 10 companies (bar) ──────────────────────────
 def chart_top_companies(conn):
     df = q(conn, """
         SELECT c.name AS company, COUNT(DISTINCT pc.patent_id) AS patents
@@ -98,7 +89,6 @@ def chart_top_companies(conn):
     save(fig, "chart_top_companies.png")
 
 
-# ── Chart 4: Country share (pie) ─────────────────────────────
 def chart_country_share(conn):
     df = q(conn, """
         SELECT i.country, COUNT(DISTINCT pi.patent_id) AS patents
@@ -108,7 +98,6 @@ def chart_country_share(conn):
         GROUP BY i.country ORDER BY patents DESC LIMIT 8
     """)
 
-    # Lump tail into "Other"
     total   = df["patents"].sum()
     df_top  = df.head(7).copy()
     other   = total - df_top["patents"].sum()
@@ -132,7 +121,6 @@ def chart_country_share(conn):
     save(fig, "chart_country_share.png")
 
 
-# ── Chart 5: Stacked bar – top 5 countries over time ─────────
 def chart_country_trend(conn):
     top5 = q(conn, """
         SELECT i.country
@@ -174,7 +162,6 @@ def chart_country_trend(conn):
     save(fig, "chart_country_trend.png")
 
 
-# ── Main ──────────────────────────────────────────────────────
 def main():
     print("\n" + "=" * 55)
     print("  Generating Visualizations")
